@@ -1,0 +1,54 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+
+{{!
+
+    @template local_message/manage
+
+
+    Example context (json):
+    {
+
+    }
+}}
+
+<h1>Todo List</h1>
+
+<input type="button" class="btn btn-secondary" value="Create" onclick="location.href='/local/todo/add.php'">
+<hr>
+
+<table class="table table-striped">
+    <tr>
+        <th>Todo</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+
+    {{#todos}}
+    <tr>
+        <td>{{todo_title}}</td>
+        <td>{{todo_status}}</td>
+        <td>
+            <input type="button" class="btn btn-danger" value="Delete" onclick="location.href='/local/todo/delete.php?id={{id}}'">
+            <input type="button" class="btn btn-warning" value="Edit" onclick="location.href='/local/todo/add.php?id={{id}}'">
+            <input type="button" class="btn btn-primary" value="View" onclick="location.href='/local/todo/view.php?id={{id}}'">
+        </td>
+    </tr>
+    {{/todos}}  
+
+</table>
+
