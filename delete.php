@@ -15,9 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the local_message plugin.
- *
- * @package    local_message
+ * @package    local_todo
  * @author     Wan Asyraf
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

@@ -15,41 +15,40 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the local_message plugin.
  *
  * @package    local_todo
  * @author     Wan Asyraf
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+ use local_todo\manage; //include this for class usage
 
 require_once(__DIR__ . '/../../config.php');
 require_once(__DIR__ . '/classes/forms/todoform.php');
-// require_once(__DIR__ . '/../../classes/forms/add_form.php');
 
 global $DB, $USER, $CFG; //*IMPORTANT* Always import this for convenience
 
 $PAGE-> set_url('/local/todo/add.php'); //set the url to the page
-
 $PAGE-> set_context(\context_system::instance());
 $PAGE-> set_title(get_string('todo_add_title', 'local_todo')); // set title for the page
 
-require_login();
+require_login(); // adding and editing todo requires login
+
+//initialize class(es)
+$manage= new manage();
 
 //get id
 $id = optional_param('id','', PARAM_TEXT); //get the id form url parameter
 // -----------------------------------------------
 
 //display the form here------------------------
+// if no id then it is a new todo
 $mform = new todoform_form(); //add form
 $toform = [];
-//---------------------------------------------
-
-// if no org ID then it is a new org
-// if there is an objid the we show the edit for with save
+// if there is an id then show the edit for with save
 $mform = new todoform_form("?id=$id");
 $toform = [];
-
+//---------------------------------------------
 
 //Form data handling --------------------------
 //* when the user press cancel button
@@ -58,27 +57,20 @@ if ($mform->is_cancelled()) {
     redirect("/local/todo/list.php", '', 10);
 }
 
+//* if the user press submit button 
 elseif ($fromform = $mform->get_data()){
 
+     //if id is present, then call edit todo function from classes/manage.php to edit the todo
      if($id) {
-        //if theres id then update
-        $updatetodo = $DB->get_record('local_todo', ['id' => $id]);
-    
-        $updatetodo->todo_title = $fromform->todo_title;
-        $updatetodo->todo_item = $fromform->todo_item;
-        $updatetodo->todo_status = $fromform->todo_status;
-    
-        $DB->update_record('local_todo', $updatetodo);
+        $manage->edit_todo($id,$fromform);
     }
 
+   //else call add todo function from classes/manage.php to add a todo
     else {
-            //if no id then add new
-            $newtodo = new stdClass();
-            $newtodo->todo_title = $fromform->todo_title;
-            $newtodo->todo_item = $fromform->todo_item;
-            $newtodo->todo_status = $fromform->todo_status;
-            $newtodoid = $DB->insert_record('local_todo',$newtodo, true, false);
-        }
+        $manage->add_todo($fromform);
+    }
+    
+    //After add or edit a  todo, redirect user to list of todo with a message (list.php)
      redirect("/local/todo/list.php", 'Changes Saved', 10 , \core\output\notification::NOTIFY_SUCCESS);
 }
     
@@ -89,6 +81,7 @@ else {
 
     //set default data
     $mform->set_data($toform);
+
 
     echo $OUTPUT->header(); //header of the page
 
