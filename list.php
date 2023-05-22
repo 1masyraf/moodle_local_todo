@@ -15,14 +15,12 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the local_message plugin.
+ * Version information for the local_todo plugin.
  *
- * @package    local_message
+ * @package    local_todo
  * @author     Wan Asyraf
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
- use local_todo\manage;
 
 require_once(__DIR__ . '/../../config.php');
 
@@ -34,31 +32,15 @@ $PAGE-> set_title(get_string('todo_page_title', 'local_todo')); // set title for
 
 require_login(); // to view this page, user need to be logged in using their credentials
 
-//if the logged in user is not an admin, they cant view this page (will be changed later)
-// if(!has_capability('local/todo:admin', context_system::instance())){
-//     echo $OUTPUT->header();
-//     echo "<h3> You do not have permission to view this page</h3>";
-//     echo $OUTPUT->footer();
-//     exit;
-// }
-
-
 //get all record from db
 $todos = $DB->get_records('local_todo');
-
-
-// $id = optional_param('id','', PARAM_TEXT);
-
-// $manage = new manage();
-
-// $manage->delete_todo($id);
 
 
 echo $OUTPUT->header(); //header of the page
 
 //template context (from local/templates)----------------------------------------------------
 $templatecontext = (object)[
-    'todos' => array_values($todos), //list of all messages from the database
+    'todos' => array_values($todos), //list of all todos from the database
 ];
 echo $OUTPUT->render_from_template('local_todo/todo', $templatecontext);
 //template context ends here -----------------------------------------------------------------

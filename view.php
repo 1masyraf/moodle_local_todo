@@ -24,8 +24,6 @@
 
 
 require_once(__DIR__ . '/../../config.php');
-// require_once('C:\Moodle\server\moodle\local\todo\templates\view.mustache');
-
 
 global $DB; //*IMPORTANT* This is needed for querying the database without writing direct statements
 
@@ -34,32 +32,19 @@ $PAGE-> set_context(\context_system::instance());
 $PAGE-> set_title(get_string('todo_view_page_title', 'local_todo')); // set title for the page
 
 
+$id = optional_param('id','', PARAM_TEXT); //get the id from the url parameter
 
-$id = optional_param('id','', PARAM_TEXT);
-
-$todoview = $DB->get_records('local_todo', ['id' => $id]);
-
+$todoview = $DB->get_records('local_todo', ['id' => $id]); //fetch all todo data from db
 
 echo $OUTPUT->header(); //header of the page
-
 //Content Body----------------------------------------------------
-
-//  echo 'Hello World, This is TODO list page';
-//  echo __DIR__ . '/../../classes/forms/add_form.php';
-//  echo __DIR__ . '/../../config.php';
-
 //template context (from local/templates)----------------------------------------------------
-
 $templatecontext = (object)[
-
     'todoviews' => array_values($todoview), //send the array values from db to mustache template
     'listurl' => new moodle_url('/local/todo/list.php'), //set the list url for navigation
-  
 ];
-
 echo $OUTPUT->render_from_template('local_todo/view', $templatecontext);
-
 //template context ends here -----------------------------------------------------------------
-// var_dump($todoview); // var dump for debugging
 
+// var_dump($todoview); // var dump for debugging
 echo $OUTPUT->footer(); //footer of the page 

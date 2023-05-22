@@ -8,7 +8,8 @@
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="todo_item" TYPE="text"  NOTNULL="true"  SEQUENCE="false"/>
-        <FIELD NAME="todo_status" TYPE="int"  LENGTH="10" DEFAULT="1" NOTNULL="true"  SEQUENCE="false"/>
+        <FIELD NAME="todo_status" TYPE="text"  NOTNULL="true"  SEQUENCE="false"/>
+        <FIELD NAME="todo_title" TYPE="text"  NOTNULL="true"  SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
